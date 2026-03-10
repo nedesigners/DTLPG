@@ -259,7 +259,11 @@ function analyzeFile($filePath, $technicians, $requiredColumns, $dupeWindow) {
         foreach ($data as $row) {
             $p1 = trim((string)($row[$phone1Idx] ?? ''));
             $p2 = trim((string)($row[$phone2Idx] ?? ''));
-            if ($p1 === '' && $p2 === '') {
+            // Count as missing if empty, a placeholder like "-", an error like "#N/A",
+            // or fewer than 7 digits (not a real phone number)
+            $p1Valid = $p1 !== '' && $p1 !== '-' && $p1 !== '#N/A' && strlen(preg_replace('/\D/', '', $p1)) >= 7;
+            $p2Valid = $p2 !== '' && $p2 !== '-' && $p2 !== '#N/A' && strlen(preg_replace('/\D/', '', $p2)) >= 7;
+            if (!$p1Valid && !$p2Valid) {
                 $missingContact++;
             }
         }
@@ -1039,6 +1043,13 @@ function renderPreview(d) {
     html += stat(d.lowestPriority, 'Lowest', 'total');
     html += '</div>';
 
+    if (d.missingContact > 0) {
+      html += '<div class="preview-warn-box" style="margin-bottom:14px;">';
+      html += '<strong>&#9888; ' + d.missingContact + ' row(s) have no contact number</strong>';
+      html += '<div class="preview-warn-footer" style="margin-top:6px;">These jobs will be flagged and emailed to Katerina for follow-up before dispatch.</div>';
+      html += '</div>';
+    }
+
     if (d.technicians && d.technicians.length > 0) {
       html += '<div class="preview-section-title">Technician Distribution</div>';
       html += '<ul class="preview-tech-list">';
@@ -1049,10 +1060,6 @@ function renderPreview(d) {
     if (d.unassigned > 0) {
       html += '<div class="preview-unassigned">&#9888; ' + d.unassigned + ' job(s) with unrecognised postcodes</div>';
     }
-    }
-
-    if (d.missingContact > 0) {
-      html += '<div class="preview-unassigned">&#9888; ' + d.missingContact + ' row(s) have no contact number and will be sent for review</div>';
     }
 
     if (d.rowErrors && d.rowErrors.length > 0) {
