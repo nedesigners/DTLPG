@@ -20,13 +20,15 @@ $REQUIRED_COLUMNS = [
     'Postcode'     => ['postcode', 'post code', 'postal code', 'zip', 'zip code', 'zipcode', 'pcode'],
     'Priority'     => ['priority', 'prio', 'urgency', 'priority level'],
     'Tanks'        => ['tanks', 'tank', 'tank id', 'tank no', 'tank number', 'tank ref', 'tank reference', 'device', 'device id'],
+    'Contact Phone 1' => ['contact phone 1', 'phone 1', 'phone1', 'contact 1', 'tel 1', 'mobile 1', 'phone', 'tel', 'mobile', 'contact number'],
+    'Contact Phone 2' => ['contact phone 2', 'phone 2', 'phone2', 'contact 2', 'tel 2', 'mobile 2'],
 ];
 
 $TECHNICIANS = [
     'Alex Norfolk'    => ['BN','BR','CR','CT','DA','EC','EN','HA','KT','ME','NW','RH','RM','SE','SL','SM','SW','TN','TW','UB','WC','WD','E1','E2','E3','E4','E5','E6','E7','E8','E9','N1','N2','N3','N4','N5','N6','N7','N8','N9','W1','W2','W3','W4','W5','W6','W7','W8','W9'],
     'Harvey Penney'   => ['BA','BH','BS','DT','EX','GL','GU','PL','PO','RG','SN','SO','SP','TA','TQ','TR'],
     'Josh Lowe'       => ['AL','CB','CM','CO','HP','IG','IP','LU','MK','NN','NR','OX','PE','SG','SS'],
-    'Marcus Sloane'   => ['AB','DD','DG','EH','FK','G1','G2','G3','G4','G5','HS','IV','KA','KW','KY','ML','PA','PH','TD','ZE'],
+    'Marcus Sloane'   => ['AB','DD','DG','EH','FK','G1','G2','G3','G4','G5','G72','G76','G84','HS','IV','KA','KW','KY','ML','PA','PH','TD','ZE'],
     'Max'             => ['CF','CH','CW','DY','HR','LD','LL','NP','SA','ST','SY','TF','WA','WN','WR','WV'],
     'Michael Barnes'  => ['DH','DL','DN','HG','HU','LS','WF','YO'],
     'Phil Mawdesley'  => ['BB','BD','BL','CA','FY','HD','HX','LA','OL','PR','SK','L1','L2','L3','L4','L5','L6','L7','L8','L9','M1','M2','M3','M4','M5','M6','M7','M8','M9'],
@@ -119,6 +121,7 @@ function analyzeFile($filePath, $technicians, $requiredColumns, $dupeWindow) {
         'lowestPriority'  => 0,
         'technicians'     => [],
         'unassigned'      => 0,
+        'missingContact'  => 0,
         'rowErrors'       => [],
         'fileHash'        => '',
         'duplicate'       => false,
@@ -248,6 +251,20 @@ function analyzeFile($filePath, $technicians, $requiredColumns, $dupeWindow) {
         $result['technicians'][] = ['name' => $name, 'count' => $count];
     }
     $result['unassigned'] = $unassigned;
+
+    $phone1Idx = $headerMap['contact phone 1'] ?? null;
+    $phone2Idx = $headerMap['contact phone 2'] ?? null;
+    $missingContact = 0;
+    if ($phone1Idx !== null || $phone2Idx !== null) {
+        foreach ($data as $row) {
+            $p1 = trim((string)($row[$phone1Idx] ?? ''));
+            $p2 = trim((string)($row[$phone2Idx] ?? ''));
+            if ($p1 === '' && $p2 === '') {
+                $missingContact++;
+            }
+        }
+    }
+    $result['missingContact'] = $missingContact;
 
     $checkLabels = [
         'location'     => 'Location',
@@ -1032,6 +1049,10 @@ function renderPreview(d) {
     if (d.unassigned > 0) {
       html += '<div class="preview-unassigned">&#9888; ' + d.unassigned + ' job(s) with unrecognised postcodes</div>';
     }
+    }
+
+    if (d.missingContact > 0) {
+      html += '<div class="preview-unassigned">&#9888; ' + d.missingContact + ' row(s) have no contact number and will be sent for review</div>';
     }
 
     if (d.rowErrors && d.rowErrors.length > 0) {
