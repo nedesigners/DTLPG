@@ -1,0 +1,2489 @@
+{
+    "name": "DTLPG",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 3918867,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 3450
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "v4 withsort"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "google-drive:uploadAFile",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 5062853
+            },
+            "mapper": {
+                "data": "{{1.file.data}}",
+                "title": "{{1.filename}}",
+                "select": "value",
+                "convert": true,
+                "filename": "{{1.filename}}",
+                "folderId": "/1uc28qTaR6vMrCnjhggvS1ug4p0QACGKR/1x5NHyv633nIcudc_Lb_4bIhuLwTTc64y/1JRtqNSMuZW2NmPcVSGfDajTUlWQpYdub",
+                "targetType": "application/vnd.google-apps.spreadsheet",
+                "destination": "drive"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 3450
+                },
+                "restore": {
+                    "expect": {
+                        "select": {
+                            "label": "Select from the list"
+                        },
+                        "folderId": {
+                            "mode": "chose",
+                            "path": [
+                                "Needs adding to NAS",
+                                "DTLPG",
+                                "XLS"
+                            ]
+                        },
+                        "targetType": {
+                            "label": "application/vnd.google-apps.spreadsheet"
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-restricted"
+                            },
+                            "label": "Dave@ Make (dave@northerndesigners.co.uk)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-restricted",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 3,
+            "module": "google-sheets:filterRows",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 5980547
+            },
+            "mapper": {
+                "from": "drive",
+                "limit": "10000",
+                "sheetId": "sheet",
+                "sortOrder": "asc",
+                "spreadsheetId": "{{2.id}}",
+                "tableFirstRow": "A1:CZ1",
+                "includesHeaders": true,
+                "valueRenderOption": "FORMATTED_VALUE",
+                "dateTimeRenderOption": "FORMATTED_STRING"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 3450
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "Select from My Drive"
+                        },
+                        "sortOrder": {
+                            "mode": "chose",
+                            "label": "Ascending"
+                        },
+                        "spreadsheetId": {
+                            "mode": "edit"
+                        },
+                        "tableFirstRow": {
+                            "label": "A-CZ"
+                        },
+                        "includesHeaders": {
+                            "mode": "chose",
+                            "label": "Yes"
+                        },
+                        "valueRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted value"
+                        },
+                        "dateTimeRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted string"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (dave@northerndesigners.co.uk)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 13,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 3450
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 51,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Alex Norfolk",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BR",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CR",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CT",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "EC",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "EN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "KT",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "ME",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "NW",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "RH",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "RM",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SE",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SM",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SW",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TW",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "UB",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WC",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WD",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E6",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E7",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E8",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "E9",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N6",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N7",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N8",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "N9",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W6",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W7",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W8",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "W9",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 0
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 52,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Alex Norfolk — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Alex, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{51.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{51.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Alex Norfolk — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 0
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 58,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Harvey Penney",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BH",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BS",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DT",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "EX",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "GL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "GU",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "PL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "PO",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "RG",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SO",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SP",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TQ",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TR",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 900
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 59,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Harvey Penney — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Harvey, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{58.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{58.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Harvey Penney — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 900
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 65,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Josh Lowe",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "AL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CB",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CM",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CO",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HP",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "IG",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "IP",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "LU",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "MK",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "NN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "NR",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "OX",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "PE",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SG",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SS",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 1800
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 66,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Josh Lowe — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Josh, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{65.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{65.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Josh Lowe — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 1800
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 72,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Marcus Sloane",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "AB",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DD",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DG",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "EH",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "FK",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "G1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "G2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "G3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "G4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "G5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HS",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "IV",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "KA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "KW",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "KY",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "ML",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "PA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "PH",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TD",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "ZE",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 2700
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 73,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Marcus Sloane — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Marcus, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{72.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{72.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Marcus Sloane — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 2700
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 79,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Max",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CF",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CH",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CW",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DY",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HR",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "LD",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "LL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "NP",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "ST",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SY",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TF",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WR",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WV",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 3600
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 80,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Max — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Max, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{79.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{79.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Max — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 3600
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 86,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Michael Barnes",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DH",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HG",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HU",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "LS",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WF",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "YO",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 4500
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 87,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Michael Barnes — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Michael, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{86.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{86.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Michael Barnes — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 4500
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 93,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Phil Mawdesley",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BB",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BD",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "BL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "FY",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HD",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "HX",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "LA",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "OL",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "PR",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SK",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L6",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L7",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L8",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "L9",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M6",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M7",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M8",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "M9",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 5400
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 94,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Phil Mawdesley — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Phil, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{93.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{93.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Phil Mawdesley — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 5400
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 100,
+                            "module": "util:TextAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 3,
+                                "rowSeparator": ""
+                            },
+                            "filter": {
+                                "name": "Shaun",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "CV",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "DE",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "LE",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "LN",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "NE",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "NG",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "SR",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "TS",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "WS",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B6",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B7",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B8",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "B9",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S1",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S2",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S3",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S4",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S5",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S6",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S7",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S8",
+                                            "o": "text:startwith"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{3.`5`}}",
+                                            "b": "S9",
+                                            "o": "text:startwith"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "value": "<tr><td style=\"padding:0 0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;background:#ffffff;border:1px solid #d0d8e4;border-radius:6px;border-left:4px solid {{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};\">\n<tr><td style=\"padding:14px 16px 6px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"font-size:15px;font-weight:700;color:#1a2b4a;line-height:1.3;\">{{3.`2`}}</td>\n<td width=\"48\" style=\"text-align:right;\"><span style=\"display:inline-block;background:{{if(3.`10` > 6; \"#c0392b\"; if(3.`10` > 3; \"#d4830a\"; \"#27ae60\"))}};color:#ffffff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;\">P{{3.`10`}}</span></td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:4px 16px 10px;font-size:13px;color:#3d5468;line-height:1.5;\">{{3.`4`}}</td></tr>\n<tr><td style=\"padding:0 16px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:70px;vertical-align:top;\"><strong>Postcode</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;font-weight:600;\">{{3.`5`}}</td>\n<td style=\"padding:8px 0;font-size:12px;color:#7a8fa3;width:50px;vertical-align:top;text-align:right;\"><strong>Tank</strong></td>\n<td style=\"padding:8px 0;font-size:13px;color:#1a2b4a;text-align:right;\">{{3.`11`}}</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding:0 16px 14px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #e8ecf0;\"><tr>\n<td style=\"padding:8px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#7a8fa3;font-weight:700;\">Notes</td>\n</tr><tr>\n<td style=\"padding:4px 0 0;font-size:13px;color:#3d5468;line-height:1.6;\">{{3.`13`}}</td>\n</tr></table>\n</td></tr>\n</table>\n</td></tr>"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 6300
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Google Sheets - Search Rows"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "rowSeparator": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "rowSeparator",
+                                        "type": "select",
+                                        "label": "Row separator",
+                                        "validate": {
+                                            "enum": [
+                                                "\n",
+                                                "\t",
+                                                "other"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "value",
+                                        "type": "text",
+                                        "label": "Text"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 101,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 12717785
+                            },
+                            "mapper": {
+                                "to": [
+                                    "alex@northerndesigners.co.uk"
+                                ],
+                                "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><meta name=\"color-scheme\" content=\"light\"><meta name=\"supported-color-schemes\" content=\"light\"><style>@media only screen and (max-width:620px){.email-card{width:100% !important;}.email-pad{padding:16px !important;}.email-logo{width:200px !important;}}</style></head>\n<body style=\"margin:0;padding:0;background:#bfe4ff;font-family:Arial,Helvetica,sans-serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"padding:30px 0;\"><tr><td align=\"center\">\n<table class=\"email-card\" width=\"620\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;max-width:620px;background:#f8fbff;border-radius:8px;overflow:hidden;\">\n<tr><td style=\"padding:24px 32px 16px;text-align:center;background:#ffffff;\"><img class=\"email-logo\" src=\"https://dtlpg.co.uk/wp-content/uploads/2024/03/cropped-logo-png-2048x512.png\" alt=\"DTLPG — DT Leak Protection Group\" width=\"280\" style=\"max-width:280px;height:auto;\"></td></tr>\n<tr><td style=\"background:#1a2b4a;padding:24px 32px;\"><h1 style=\"margin:0;font-size:20px;color:#ffffff;\">Shaun — Weekly Jobs</h1><p style=\"margin:6px 0 0;font-size:13px;color:#8ba0b5;\">Week commencing {{formatDate(now; \"DD MMMM YYYY\")}}</p></td></tr>\n<tr><td style=\"padding:24px 32px 8px;background:#ffffff;\"><p style=\"margin:0;font-size:16px;color:#1a2b4a;line-height:1.7;\">Hi Shaun, here are your jobs for this week.</p></td></tr>\n<tr><td style=\"padding:8px 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding:12px 16px;background:#f0f5fa;border-radius:6px;text-align:center;\"><span style=\"font-size:28px;font-weight:700;color:#1a2b4a;\">{{100.numberOfOperations}}</span><span style=\"font-size:13px;color:#3d5468;margin-left:6px;\">jobs this week</span></td></tr></table></td></tr>\n<tr><td style=\"padding:0 32px 20px;background:#ffffff;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"font-size:11px;color:#7a8fa3;text-align:center;\"><span style=\"display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P7–9</span> High&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#d4830a;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P4–6</span> Medium&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"display:inline-block;background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;\">P1–3</span> Low</td></tr></table></td></tr>\n<tr><td class=\"email-pad\" style=\"padding:0 32px 24px;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n{{100.text}}\n</table>\n</td></tr>\n<tr><td style=\"padding:16px 32px 28px;background:#ffffff;border-top:1px solid #d0d8e4;\"><p style=\"margin:0;font-size:13px;color:#3d5468;line-height:1.6;\">Powered by <a href=\"https://northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;font-weight:600;\">NORTHERN Design &amp; Digital Marketing</a> · Any issues? Email <a href=\"mailto:dave@northerndesigners.co.uk\" style=\"color:#1a2b4a;text-decoration:underline;\">dave@northerndesigners.co.uk</a></p></td></tr>\n</table></td></tr></table>\n</body></html>",
+                                "subject": "DTLPG — Shaun — Week Commencing {{formatDate(now; \"DD MMM YYYY\")}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 6300
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (dave@northerndesigners.co.uk)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    }
+}

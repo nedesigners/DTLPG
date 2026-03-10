@@ -1,0 +1,5 @@
+vendor/
+composer.phar
+uploads.log
+*.xlsx
+.DS_Store
